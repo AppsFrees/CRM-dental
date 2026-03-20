@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRM Dental Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>CRM Dental Pro</h1>
+    <nav class="top-nav">
+      <button data-view="dashboard">Inicio</button>
+      <button data-view="patients">Pacientes</button>
+      <button data-view="appointments">Agenda</button>
+      <button data-view="payments">Pagos</button>
+      <button data-view="reports">Reportes</button>
+    </nav>
+  </header>
+
+  <main id="main-view">
+    <!-- Dashboard -->
+    <section id="view-dashboard" class="view active">
+      <h2>Resumen</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Pacientes</h3>
+          <p id="dashboard-patient-count">0</p>
+        </div>
+        <div class="card">
+          <h3>Citas hoy</h3>
+          <p id="dashboard-today-appointments">0</p>
+        </div>
+        <div class="card">
+          <h3>Ingresos del mes (PEN)</h3>
+          <p id="dashboard-month-income">0.00</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pacientes -->
+    <section id="view-patients" class="view">
+      <h2>Pacientes</h2>
+
+      <div class="toolbar">
+        <input type="search" id="patient-search" placeholder="Buscar por nombre, DNI o teléfono" />
+        <button id="btn-new-patient">Nuevo paciente</button>
+      </div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="patient-list"></tbody>
+      </table>
+    </section>
+
+    <!-- Detalle de paciente -->
+    <section id="view-patient-detail" class="view">
+      <button class="btn-secondary" id="btn-back-to-patients">&larr; Volver</button>
+      <h2 id="patient-detail-name">Paciente</h2>
+
+      <div class="tabs">
+        <button data-tab="patient-info" class="active">Datos</button>
+        <button data-tab="patient-history">Historia clínica</button>
+        <button data-tab="patient-odontogram">Odontograma</button>
+        <button data-tab="patient-treatments">Tratamientos</button>
+        <button data-tab="patient-payments">Pagos</button>
+        <button data-tab="patient-documents">Documentos</button>
+      </div>
+
+      <!-- Datos básicos -->
+      <div class="tab-content active" id="tab-patient-info">
+        <form id="form-patient">
+          <input type="hidden" id="patient-id" />
+          <div class="form-grid">
+            <label>Nombre completo
+              <input type="text" id="patient-fullName" required />
+            </label>
+            <label>DNI
+              <input type="text" id="patient-dni" />
+            </label>
+            <label>Teléfono
+              <input type="tel" id="patient-phone" />
+            </label>
+            <label>Correo
+              <input type="email" id="patient-email" />
+            </label>
+            <label>Fecha nacimiento
+              <input type="date" id="patient-birthDate" />
+            </label>
+            <label>Dirección
+              <input type="text" id="patient-address" />
+            </label>
+            <label>Contacto emergencia
+              <input type="text" id="patient-emergencyContact" />
+            </label>
+          </div>
+          <label>Observaciones
+            <textarea id="patient-notes" rows="3"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit">Guardar</button>
+            <button type="button" class="btn-danger" id="btn-delete-patient">Eliminar paciente</button>
+            <button type="button" id="btn-open-whatsapp">WhatsApp</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Historia clínica -->
+      <div class="tab-content" id="tab-patient-history">
+        <form id="form-clinical-history">
+          <label>Alergias
+            <textarea id="history-allergies" rows="2"></textarea>
+          </label>
+          <label>Enfermedades sistémicas
+            <textarea id="history-systemic" rows="2"></textarea>
+          </label>
+          <label>Medicación
+            <textarea id="history-medications" rows="2"></textarea>
+          </label>
+          <label>Embarazo
+            <textarea id="history-pregnancy" rows="2"></textarea>
+          </label>
+          <label>Hábitos
+            <textarea id="history-habits" rows="2"></textarea>
+          </label>
+          <label>Notas clínicas
+            <textarea id="history-notes" rows="3"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit">Guardar historia clínica</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Odontograma (simple por lista FDI) -->
+      <div class="tab-content" id="tab-patient-odontogram">
+        <form id="form-tooth-record">
+          <div class="form-inline">
+            <label>Pieza FDI
+              <input type="text" id="tooth-number" placeholder="Ej: 11, 36" />
+            </label>
+            <label>Estado
+              <input type="text" id="tooth-status" placeholder="Caries, Obturado, etc." />
+            </label>
+            <label>Tratamiento
+              <input type="text" id="tooth-treatment" />
+            </label>
+            <label>Notas
+              <input type="text" id="tooth-notes" />
+            </label>
+            <button type="submit">Agregar/Actualizar</button>
+          </div>
+        </form>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Pieza</th>
+              <th>Estado</th>
+              <th>Tratamiento</th>
+              <th>Notas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tooth-list"></tbody>
+        </table>
+      </div>
+
+      <!-- Tratamientos -->
+      <div class="tab-content" id="tab-patient-treatments">
+        <form id="form-treatment">
+          <input type="hidden" id="treatment-id" />
+          <div class="form-grid">
+            <label>Nombre
+              <input type="text" id="treatment-name" required />
+            </label>
+            <label>Pieza
+              <input type="text" id="treatment-tooth" />
+            </label>
+            <label>Precio (PEN)
+              <input type="number" id="treatment-price" min="0" step="0.01" required />
+            </label>
+            <label>Descuento (PEN)
+              <input type="number" id="treatment-discount" min="0" step="0.01" />
+            </label>
+            <label>Estado
+              <select id="treatment-status">
+                <option value="planificado">Planificado</option>
+                <option value="en_progreso">En progreso</option>
+                <option value="terminado">Terminado</option>
+              </select>
+            </label>
+          </div>
+          <label>Descripción
+            <textarea id="treatment-description" rows="2"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit">Guardar tratamiento</button>
+          </div>
+        </form>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Pieza</th>
+              <th>Precio</th>
+              <th>Descuento</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="treatment-list"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagos -->
+      <div class="tab-content" id="tab-patient-payments">
+        <form id="form-payment">
+          <input type="hidden" id="payment-id" />
+          <div class="form-grid">
+            <label>Fecha
+              <input type="date" id="payment-date" required />
+            </label>
+            <label>Monto (PEN)
+              <input type="number" id="payment-amount" min="0" step="0.01" required />
+            </label>
+            <label>Descuento (PEN)
+              <input type="number" id="payment-discount" min="0" step="0.01" />
+            </label>
+            <label>Método
+              <select id="payment-method">
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="yape">Yape/Plin</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Registrar pago</button>
+          </div>
+        </form>
+
+        <div class="balance-summary">
+          <p>Total tratamientos: <span id="balance-total-treatments">0.00</span> PEN</p>
+          <p>Total abonado: <span id="balance-total-payments">0.00</span> PEN</p>
+          <p><strong>Saldo pendiente: <span id="balance-pending">0.00</span> PEN</strong></p>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Descuento</th>
+              <th>Método</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="payment-list"></tbody>
+        </table>
+      </div>
+
+      <!-- Documentos -->
+      <div class="tab-content" id="tab-patient-documents">
+        <form id="form-document">
+          <input type="hidden" id="document-id" />
+          <div class="form-grid">
+            <label>Tipo
+              <input type="text" id="document-type" placeholder="Rx, Foto, PDF, etc." />
+            </label>
+            <label>URL / enlace
+              <input type="url" id="document-url" placeholder="https://..." />
+            </label>
+          </div>
+          <label>Notas
+            <textarea id="document-notes" rows="2"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit">Guardar documento</button>
+          </div>
+        </form>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>URL</th>
+              <th>Notas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="document-list"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Agenda -->
+    <section id="view-appointments" class="view">
+      <h2>Agenda</h2>
+      <div class="toolbar">
+        <input type="date" id="appointments-date-filter" />
+        <button id="btn-new-appointment">Nueva cita</button>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Paciente</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="appointment-list"></tbody>
+      </table>
+    </section>
+
+    <!-- Pagos globales -->
+    <section id="view-payments" class="view">
+      <h2>Pagos</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Fecha</th>
+            <th>Monto</th>
+            <th>Método</th>
+          </tr>
+        </thead>
+        <tbody id="payments-global-list"></tbody>
+      </table>
+    </section>
+
+    <!-- Reportes simples -->
+    <section id="view-reports" class="view">
+      <h2>Reportes</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Pacientes nuevos (mes)</h3>
+          <p id="report-new-patients">0</p>
+        </div>
+        <div class="card">
+          <h3>Citas pendientes</h3>
+          <p id="report-pending-appointments">0</p>
+        </div>
+        <div class="card">
+          <h3>Suma de saldos pendientes (PEN)</h3>
+          <p id="report-pending-balance">0.00</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal simple para crear/editar cita -->
+  <div id="appointment-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="appointment-modal-title">Nueva cita</h3>
+      <form id="form-appointment">
+        <input type="hidden" id="appointment-id" />
+        <label>Paciente
+          <select id="appointment-patientId"></select>
+        </label>
+        <label>Fecha
+          <input type="date" id="appointment-date" required />
+        </label>
+        <label>Hora
+          <input type="time" id="appointment-time" required />
+        </label>
+        <label>Motivo
+          <input type="text" id="appointment-reason" required />
+        </label>
+        <label>Estado
+          <select id="appointment-status">
+            <option value="programada">Programada</option>
+            <option value="confirmada">Confirmada</option>
+            <option value="atendida">Atendida</option>
+            <option value="no_asistio">No asistió</option>
+            <option value="cancelada">Cancelada</option>
+          </select>
+        </label>
+        <label>Notas
+          <textarea id="appointment-notes" rows="2"></textarea>
+        </label>
+        <div class="form-actions">
+          <button type="submit">Guardar</button>
+          <button type="button" id="btn-appointment-calendar">Abrir en Calendar</button>
+          <button type="button" class="btn-secondary" id="btn-close-appointment-modal">Cerrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

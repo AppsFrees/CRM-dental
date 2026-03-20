@@ -1,0 +1,273 @@
+:root {
+  --primary: #0066cc;
+  --primary-light: #e6f2ff;
+  --danger: #cc0033;
+  --bg: #f5f5f5;
+  --card-bg: #ffffff;
+  --border: #dddddd;
+  --text: #222222;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-header {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header h1 {
+  font-size: 1.2rem;
+  margin: 0.3rem 0;
+}
+
+.top-nav button {
+  margin: 0 0.25rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--primary);
+  background: #ffffff;
+  color: var(--primary);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.top-nav button:hover {
+  background: var(--primary-light);
+}
+
+main {
+  padding: 1rem;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.toolbar input[type="search"],
+.toolbar input[type="date"] {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.4rem;
+}
+
+.toolbar button {
+  padding: 0.4rem 0.8rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 6px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+}
+
+.card h3 {
+  margin-top: 0;
+  font-size: 0.95rem;
+}
+
+.card p {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 0.45rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.table thead {
+  background: var(--primary-light);
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+button {
+  border-radius: 4px;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button.btn-secondary {
+  background: #ffffff;
+  color: var(--primary);
+}
+
+button.btn-danger {
+  border-color: var(--danger);
+  background: var(--danger);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+form {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.8rem;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.35rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.tabs button {
+  background: #ffffff;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.tabs button.active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.form-inline label {
+  min-width: 120px;
+}
+
+.balance-summary {
+  background: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 6px;
+  max-width: 400px;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .top-nav {
+    margin-top: 0.5rem;
+  }
+}
